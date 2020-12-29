@@ -7,6 +7,7 @@ TextInfo::TextInfo() {
 	chars = 0;
 }
 
+//This class only needs getters.
 int TextInfo::getLines() {
 	return this->lines;
 }

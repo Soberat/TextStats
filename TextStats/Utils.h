@@ -5,6 +5,10 @@
 #include <vector>
 #include <filesystem>
 
+
+/*
+ *	This class contains generic, non-class-specific functions 
+ */
 class Utils {
 	public:
 		int openFile(CString, std::ifstream&);
