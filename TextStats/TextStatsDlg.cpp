@@ -36,12 +36,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
-{
-}
+CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX) {}
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
+void CAboutDlg::DoDataExchange(CDataExchange* pDX) {
 	CDialogEx::DoDataExchange(pDX);
 }
 
@@ -53,14 +50,11 @@ END_MESSAGE_MAP()
 
 
 
-CTextStatsDlg::CTextStatsDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_TEXTSTATS_DIALOG, pParent)
-{
+CTextStatsDlg::CTextStatsDlg(CWnd* pParent /*=nullptr*/) : CDialogEx(IDD_TEXTSTATS_DIALOG, pParent) {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CTextStatsDlg::DoDataExchange(CDataExchange* pDX)
-{
+void CTextStatsDlg::DoDataExchange(CDataExchange* pDX) {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_EDIT_PREVIEW, m_editPreview);
 	DDX_Control(pDX, IDC_EDIT_PATH, m_editPath);
@@ -88,8 +82,7 @@ END_MESSAGE_MAP()
 
 // CTextStatsDlg message handlers
 
-BOOL CTextStatsDlg::OnInitDialog()
-{
+BOOL CTextStatsDlg::OnInitDialog() {
 	CDialogEx::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
@@ -99,14 +92,12 @@ BOOL CTextStatsDlg::OnInitDialog()
 	ASSERT(IDM_ABOUTBOX < 0xF000);
 
 	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != nullptr)
-	{
+	if (pSysMenu != nullptr) {
 		BOOL bNameValid;
 		CString strAboutMenu;
 		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
 		ASSERT(bNameValid);
-		if (!strAboutMenu.IsEmpty())
-		{
+		if (!strAboutMenu.IsEmpty()) {
 			pSysMenu->AppendMenu(MF_SEPARATOR);
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
@@ -125,8 +116,7 @@ BOOL CTextStatsDlg::OnInitDialog()
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-void CTextStatsDlg::OnSysCommand(UINT nID, LPARAM lParam)
-{
+void CTextStatsDlg::OnSysCommand(UINT nID, LPARAM lParam) {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)	{
 		CAboutDlg dlgAbout;
 		dlgAbout.DoModal();
@@ -139,10 +129,8 @@ void CTextStatsDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CTextStatsDlg::OnPaint()
-{
-	if (IsIconic())
-	{
+void CTextStatsDlg::OnPaint() {
+	if (IsIconic()) {
 		CPaintDC dc(this); // device context for painting
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
@@ -157,17 +145,14 @@ void CTextStatsDlg::OnPaint()
 
 		// Draw the icon
 		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
+	} else {
 		CDialogEx::OnPaint();
 	}
 }
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CTextStatsDlg::OnQueryDragIcon()
-{
+HCURSOR CTextStatsDlg::OnQueryDragIcon() {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
@@ -203,7 +188,7 @@ void CTextStatsDlg::OnClickedButtonAnalyze() {
 	CString strPath, strCustomPhrase, linesText, wordsText, charsText, phraseText;
 
 	CString extensions;
-	std::vector<CString> splitExtensions{};
+	std::vector<CString> splitExtensions {};
 
 	//Get the current file path and list of files in it
 	m_editPath.GetWindowTextW(strPath);
@@ -216,7 +201,7 @@ void CTextStatsDlg::OnClickedButtonAnalyze() {
 		Utils().filterExtensions(fileList, splitExtensions);
 	}
 
-	//For each file in list open the file as an ifstream and read it line-by-line. The data will be saved to an instance of TextInfo class. 
+	//For each file in list open the file as an ifstream and read it line-by-line. The gathered data will be saved to an instance of TextInfo class. 
 	for (auto file : fileList) {
 		std::ifstream current;
 
@@ -249,8 +234,8 @@ void CTextStatsDlg::OnClickedButtonAnalyze() {
 *	This is the OnChange handler for the Extensions edit. Since our function Utils::split() is safe we can call this handler reglardless of whether the user has finished typing or not.
 */
 void CTextStatsDlg::OnChangeEditExtensions() {
-	CString extensions;
-	std::vector<CString> splitExtensions{};
+	CString extensions {};
+	std::vector<CString> splitExtensions {};
 
 	m_editExtensions.GetWindowTextW(extensions);
 	splitExtensions = Utils().split(extensions, _T(","));
@@ -274,8 +259,8 @@ void CTextStatsDlg::OnChangeEditExtensions() {
 void CTextStatsDlg::OnClickedCheckFilter() {
 	int checkboxFilter = m_checkboxFilter.GetCheck();
 
-	CString strPath{}, extensionsText{};
-	std::vector<CString> extensions{};
+	CString strPath {}, extensionsText {};
+	std::vector<CString> extensions {};
 
 	//Fetch file path and extensions
 	m_editPath.GetWindowTextW(strPath);
@@ -289,7 +274,7 @@ void CTextStatsDlg::OnClickedCheckFilter() {
 	}
 
 	std::vector<CString> files = Utils().listFiles(strPath);
-	CString s{};
+	CString s {};
 
 	//We filter the files aquired above using listFiles based on the checkbox state
 	if (checkboxFilter == BST_CHECKED) {
