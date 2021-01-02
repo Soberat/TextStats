@@ -11,11 +11,11 @@
  */
 class Utils {
 	public:
-		int openFile(CString, std::ifstream&);
-		std::vector<CString> Utils::split(CString, CString);
-		CString Utils::trim(CString);
-		std::vector<CString> Utils::listFiles(CString);
-		bool Utils::endsWith(CString, CString);
-		void Utils::filterExtensions(std::vector<CString>&, std::vector<CString>);
+		static int openFile(CString, std::ifstream&);
+		static std::vector<CString> Utils::split(CString, CString);
+		static CString Utils::trim(CString);
+		static std::vector<CString> Utils::listFiles(CString);
+		static bool Utils::endsWith(CString, CString);
+		static void Utils::filterExtensions(std::vector<CString>&, std::vector<CString>);
 };
 

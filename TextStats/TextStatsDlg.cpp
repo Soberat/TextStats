@@ -169,7 +169,7 @@ void CTextStatsDlg::OnClickedButtonBrowse() {
 		CString sFilePath = dlg.GetPathName();
 		m_editPath.SetWindowTextW(sFilePath);
 
-		std::vector<CString> files = Utils().listFiles(sFilePath);
+		std::vector<CString> files = Utils::listFiles(sFilePath);
 
 		//Once a path is successfully chosen we can safely allow the user to use the Analyze function
 		m_buttonAnalyze.EnableWindow(true);
@@ -192,20 +192,20 @@ void CTextStatsDlg::OnClickedButtonAnalyze() {
 
 	//Get the current file path and list of files in it
 	m_editPath.GetWindowTextW(strPath);
-	std::vector<CString> fileList = Utils().listFiles(strPath);
+	std::vector<CString> fileList = Utils::listFiles(strPath);
 
 	//Fetch extensions to be filtered
 	if (filter) {
 		m_editExtensions.GetWindowTextW(extensions);
-		splitExtensions = Utils().split(extensions, _T(","));
-		Utils().filterExtensions(fileList, splitExtensions);
+		splitExtensions = Utils::split(extensions, _T(","));
+		Utils::filterExtensions(fileList, splitExtensions);
 	}
 
 	//For each file in list open the file as an ifstream and read it line-by-line. The gathered data will be saved to an instance of TextInfo class. 
 	for (auto file : fileList) {
 		std::ifstream current;
 
-		int status = Utils().openFile(file, current);
+		int status = Utils::openFile(file, current);
 
 		if (status == -1) {
 			//If the open function failed log it
@@ -238,7 +238,7 @@ void CTextStatsDlg::OnChangeEditExtensions() {
 	std::vector<CString> splitExtensions {};
 
 	m_editExtensions.GetWindowTextW(extensions);
-	splitExtensions = Utils().split(extensions, _T(","));
+	splitExtensions = Utils::split(extensions, _T(","));
 
 	CString str {};
 
@@ -265,7 +265,7 @@ void CTextStatsDlg::OnClickedCheckFilter() {
 	//Fetch file path and extensions
 	m_editPath.GetWindowTextW(strPath);
 	m_editExtensions.GetWindowTextW(extensionsText);
-	extensions = Utils().split(extensionsText, _T(","));
+	extensions = Utils::split(extensionsText, _T(","));
 
 	//If the path is empty, we cannot show any files, therefore we display an error
 	if (strPath.IsEmpty()) {
@@ -273,12 +273,12 @@ void CTextStatsDlg::OnClickedCheckFilter() {
 		return;
 	}
 
-	std::vector<CString> files = Utils().listFiles(strPath);
+	std::vector<CString> files = Utils::listFiles(strPath);
 	CString s {};
 
 	//We filter the files aquired above using listFiles based on the checkbox state
 	if (checkboxFilter == BST_CHECKED) {
-		Utils().filterExtensions(files, extensions);
+		Utils::filterExtensions(files, extensions);
 	} 
 
 	//For display purposes we append a carriage return and a newline to the list of files
