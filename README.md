@@ -1,6 +1,6 @@
 # TextStats
 Program showing simple statistics for a given group of files. 
-Completet as part of Object Oriented Programming Languages in Polish at AGH UST, winter 20/21.
+Completed as part of Object Oriented Programming Languages in Polish at AGH UST, winter 20/21.
 
 ## Usage
 
