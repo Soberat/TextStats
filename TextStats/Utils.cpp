@@ -63,13 +63,17 @@ std::vector<CString> Utils::split(CString str, CString delim) {
 std::vector<CString> Utils::listFiles(CString dir) {
     std::vector<CString> files {};
     std::string path = CT2A(dir.GetString());
-    for (const auto& entry : std::filesystem::directory_iterator(path)) {
-        if (entry.is_directory()) {
-            std::vector<CString> subdirFiles = listFiles(CString(entry.path().c_str()));
-            files.insert(files.begin(), subdirFiles.begin(), subdirFiles.end());
-        } else {
-            files.push_back(CString(entry.path().c_str()));
+    try {
+        for (const auto& entry : std::filesystem::directory_iterator(path)) {
+            if (entry.is_directory()) {
+                std::vector<CString> subdirFiles = listFiles(CString(entry.path().c_str()));
+                files.insert(files.begin(), subdirFiles.begin(), subdirFiles.end());
+            } else {
+                files.push_back(CString(entry.path().c_str()));
+            }
         }
+    } catch (std::filesystem::filesystem_error err) {
+        files.push_back(CString(err.what()));
     }
         
     return files;
