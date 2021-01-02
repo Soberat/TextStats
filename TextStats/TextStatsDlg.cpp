@@ -62,13 +62,16 @@ CTextStatsDlg::CTextStatsDlg(CWnd* pParent /*=nullptr*/)
 void CTextStatsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT_PREVIEW, m_previewEdit);
-	DDX_Control(pDX, IDC_EDIT_PATH, m_pathEdit);
-	DDX_Control(pDX, IDC_EDIT_EXTENSIONS, m_extensionsEdit);
-	DDX_Control(pDX, IDC_STATIC_EXTENSIONS, m_ExtensionsCorrectText);
+	DDX_Control(pDX, IDC_EDIT_PREVIEW, m_editPreview);
+	DDX_Control(pDX, IDC_EDIT_PATH, m_editPath);
+	DDX_Control(pDX, IDC_EDIT_EXTENSIONS, m_editExtensions);
+	DDX_Control(pDX, IDC_STATIC_EXTENSIONS, m_textExtensionsCorrect);
 	DDX_Control(pDX, IDC_CHECK_FILTER, m_checkboxFilter);
 	DDX_Control(pDX, IDC_EDIT_LOG, m_editLog);
 	DDX_Control(pDX, ID_BUTTON_ANALYZE, m_buttonAnalyze);
+	DDX_Control(pDX, IDC_EDIT_LINES, m_editLines);
+	DDX_Control(pDX, IDC_EDIT_WORDS, m_editWords);
+	DDX_Control(pDX, IDC_EDIT_CHARS, m_editChars);
 }
 
 BEGIN_MESSAGE_MAP(CTextStatsDlg, CDialogEx)
@@ -117,7 +120,7 @@ BOOL CTextStatsDlg::OnInitDialog()
 
 	//Put example text in Extensions box to showcase how to use it
 	CString initialExtensions{ ".jpg, .txt" };
-	m_extensionsEdit.SetWindowTextW(initialExtensions);
+	m_editExtensions.SetWindowTextW(initialExtensions);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -179,7 +182,7 @@ void CTextStatsDlg::OnClickedButtonBrowse() {
 	CFolderPickerDialog dlg(NULL, 0, this);
 	if (dlg.DoModal() == IDOK) {
 		CString sFilePath = dlg.GetPathName();
-		SetDlgItemText(IDC_EDIT_PATH, sFilePath);
+		m_editPath.SetWindowTextW(sFilePath);
 
 		std::vector<CString> files = Utils().listFiles(sFilePath);
 
@@ -203,12 +206,12 @@ void CTextStatsDlg::OnClickedButtonAnalyze() {
 	std::vector<CString> splitExtensions{};
 
 	//Get the current file path and list of files in it
-	GetDlgItemText(IDC_EDIT_PATH, strPath);	
+	m_editPath.GetWindowTextW(strPath);
 	std::vector<CString> fileList = Utils().listFiles(strPath);
 
 	//Fetch extensions to be filtered
 	if (filter) {
-		m_extensionsEdit.GetWindowTextW(extensions);
+		m_editExtensions.GetWindowTextW(extensions);
 		splitExtensions = Utils().split(extensions, _T(","));
 		Utils().filterExtensions(fileList, splitExtensions);
 	}
@@ -236,9 +239,9 @@ void CTextStatsDlg::OnClickedButtonAnalyze() {
 	wordsText.Format(_T("%d"), ti.getWords());
 	charsText.Format(_T("%d"), ti.getChars());
 
-	SetDlgItemText(IDC_EDIT_LINES, linesText);
-	SetDlgItemText(IDC_EDIT_WORDS, wordsText);
-	SetDlgItemText(IDC_EDIT_CHARS, charsText);
+	m_editLines.SetWindowTextW(linesText);
+	m_editWords.SetWindowTextW(wordsText);
+	m_editChars.SetWindowTextW(charsText);
 }
 
 
@@ -249,7 +252,7 @@ void CTextStatsDlg::OnChangeEditExtensions() {
 	CString extensions;
 	std::vector<CString> splitExtensions{};
 
-	m_extensionsEdit.GetWindowTextW(extensions);
+	m_editExtensions.GetWindowTextW(extensions);
 	splitExtensions = Utils().split(extensions, _T(","));
 
 	CString str {};
@@ -258,7 +261,7 @@ void CTextStatsDlg::OnChangeEditExtensions() {
 	for (auto ext : splitExtensions) {
 		str += (ext + _T(" "));
 	}
-	m_ExtensionsCorrectText.SetWindowTextW(str);
+	m_textExtensionsCorrect.SetWindowTextW(str);
 	
 
 	//We also call the OnClicked check handler, so the file list is updated immediately.
@@ -275,13 +278,13 @@ void CTextStatsDlg::OnClickedCheckFilter() {
 	std::vector<CString> extensions{};
 
 	//Fetch file path and extensions
-	GetDlgItemText(IDC_EDIT_PATH, strPath);
-	m_extensionsEdit.GetWindowTextW(extensionsText);
+	m_editPath.GetWindowTextW(strPath);
+	m_editExtensions.GetWindowTextW(extensionsText);
 	extensions = Utils().split(extensionsText, _T(","));
 
 	//If the path is empty, we cannot show any files, therefore we display an error
 	if (strPath.IsEmpty()) {
-		m_previewEdit.SetWindowTextW(CString("No file path given!"));
+		m_editPreview.SetWindowTextW(CString("No file path given!"));
 		return;
 	}
 
@@ -302,7 +305,7 @@ void CTextStatsDlg::OnClickedCheckFilter() {
 	s.Replace(strPath + "\\", _T(""));
 
 	if (s.IsEmpty()) s = CString("No files found");
-	m_previewEdit.SetWindowTextW(s);
+	m_editPreview.SetWindowTextW(s);
 
 }
 

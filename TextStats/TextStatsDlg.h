@@ -33,17 +33,20 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnClickedButtonBrowse();
-	CEdit m_previewEdit;
+	CEdit m_editPreview;
 	afx_msg void OnClickedButtonAnalyze();
-	CEdit m_pathEdit;
+	CEdit m_editPath;
 	CEdit m_customPhraseEdit;
 	afx_msg void OnEnChangeEdit2();
 	afx_msg void OnChangeEditExtensions();
-	CEdit m_extensionsEdit;
-	CStatic m_ExtensionsCorrectText;
+	CEdit m_editExtensions;
+	CStatic m_textExtensionsCorrect;
 	afx_msg void OnClickedCheckFilter();
 	CButton m_checkboxFilter;
 	CEdit m_editLog;
 	CButton m_buttonAnalyze;
 	afx_msg void OnClickedButtonExit();
+	CEdit m_editLines;
+	CEdit m_editWords;
+	CEdit m_editChars;
 };
